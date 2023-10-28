@@ -24,6 +24,17 @@ const NewIssuePage = () => {
         resolver: zodResolver(createIssueSchema)
     });
 
+    const onSubmit = handleSubmit(async (data) => {
+        try {
+            setIsSubmiting(true);
+            await axios.post('/api/issues', data);
+            router.push("/issues");
+        } catch (error) {
+            setError('An unexpected error occurred!');
+            setIsSubmiting(false);
+        }
+    });
+
     return (
         <div className='bg-slate-100 p-3 sm:p-5 rounded-sm max-w-xl mx-auto space-y-4'>
             {error && (
@@ -32,16 +43,7 @@ const NewIssuePage = () => {
 
             <form
                 className='space-y-4'
-                onSubmit={handleSubmit(async (data) => {
-                    try {
-                        setIsSubmiting(true);
-                        await axios.post('/api/issues', data);
-                        router.push("/issues");
-                    } catch (error) {
-                        setError('An unexpected error occurred!');
-                        setIsSubmiting(false);
-                    }
-                })}
+                onSubmit={onSubmit}
             >
                 <div className="space-y-2">
                     <Input placeholder='Title' {...register("title")} />
