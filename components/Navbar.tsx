@@ -12,7 +12,6 @@ type Props = {}
 const Navbar = (props: Props) => {
     const currentPath = usePathname();
     
-
     const links = [
         { label: 'Dashboard', href: '/' },
         { label: 'Issues', href: '/issues' },
