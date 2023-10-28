@@ -20,13 +20,13 @@ const Navbar = (props: Props) => {
 
     return (
         <nav className='flex items-center px-5 space-x-6 h-14 border-b'>
-            <Link href="/" className=' text-indigo-500'><BsSubtract className="text-3xl" /></Link>
+            <Link href="/" className=' text-slate-800'><BsSubtract className="text-3xl" /></Link>
             <ul className='flex space-x-6'>
                 {links.map(link => 
                     <li key={link.label}><Link href={link.href} className={classNames({
-                        'text-indigo-500': link.href === currentPath,
-                        'text-zinc-500': link.href !== currentPath,
-                        'hover:text-indigo-500 transition-colors': true
+                        'text-slate-800': link.href === currentPath,
+                        'text-slate-500': link.href !== currentPath,
+                        'hover:text-slate-800 font-semibold transition-colors': true
                     })}>{link.label}</Link></li>
                 )}
             </ul>
