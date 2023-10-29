@@ -5,21 +5,24 @@ import React from 'react'
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
 import { Badge } from '@/components/ui/badge'
+import delay from 'delay'
+import IssueAction from '@/components/IssueAction'
+import Loader from '@/components/Loader/Loader'
 
 const IssuesPage = async () => {
     const issues = await prisma.issue.findMany();
 
+    await delay(2000);
+
     return (
         <div className='space-y-3'>
-            <Button><Link href="/issues/new">New Issue</Link></Button>
-
+            <IssueAction/>
             <div className='border rounded-md'>
                 <Table>
                     <TableHeader>
