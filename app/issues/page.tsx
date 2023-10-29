@@ -33,7 +33,7 @@ const IssuesPage = async () => {
                         {issues.map(issue => (
                             <TableRow key={issue.id}>
                                 <TableCell>{issue.title}</TableCell>
-                                <TableCell><Badge variant={issue.status === 'OPEN' ? 'destructive': `${issue.status === 'IN_PROGRESS' ? 'secondary': 'default'}`}>{issue.status}</Badge></TableCell>
+                                <TableCell><Badge variant={issue.status === 'OPEN' ? 'destructive': `${issue.status === 'IN_PROGRESS' ? 'secondary': 'success'}`}>{issue.status}</Badge></TableCell>
                                 <TableCell className="text-right hidden sm:table-cell">{issue.createdAt.toDateString()}</TableCell>
                             </TableRow>
                         ))}
