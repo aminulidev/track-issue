@@ -1,6 +1,4 @@
 "use client";
-
-
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -16,7 +14,7 @@ import Spinner from '@/components/Spinner';
 
 
 type IssueForm = z.infer<typeof createIssueSchema>
-const NewIssuePage = () => {
+const NewIssuePage = async () => {
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [error, setError] = useState('');
     const router = useRouter();

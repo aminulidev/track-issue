@@ -1,6 +1,4 @@
-import { Button } from '@/components/ui/button'
 import prisma from '@/prisma/client'
-import Link from 'next/link'
 import React from 'react'
 import {
     Table,
@@ -13,12 +11,13 @@ import {
 import { Badge } from '@/components/ui/badge'
 import delay from 'delay'
 import IssueAction from '@/components/IssueAction'
-import Loader from '@/components/Loader/Loader'
+import {BiSolidShow} from 'react-icons/bi'
+import Link from 'next/link'
 
 const IssuesPage = async () => {
     const issues = await prisma.issue.findMany();
 
-    await delay(2000);
+    await delay(1500);
 
     return (
         <div className='space-y-3'>
@@ -29,15 +28,19 @@ const IssuesPage = async () => {
                         <TableRow>
                             <TableHead>Issue</TableHead>
                             <TableHead>Status</TableHead>
-                            <TableHead className='text-right hidden sm:table-cell'>Created</TableHead>
+                            <TableHead className='hidden sm:table-cell'>Created</TableHead>
+                            <TableHead className='text-right'>Action</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {issues.map(issue => (
                             <TableRow key={issue.id}>
                                 <TableCell>{issue.title}</TableCell>
-                                <TableCell><Badge variant={issue.status === 'OPEN' ? 'destructive': `${issue.status === 'IN_PROGRESS' ? 'secondary': 'success'}`}>{issue.status}</Badge></TableCell>
-                                <TableCell className="text-right hidden sm:table-cell">{issue.createdAt.toDateString()}</TableCell>
+                                <TableCell><Badge variant={issue.status === 'OPEN' ? 'destructive': `${issue.status === 'IN_PROGRESS' ? 'warning': 'success'}`}>{issue.status}</Badge></TableCell>
+                                <TableCell className="hidden sm:table-cell">{issue.createdAt.toDateString()}</TableCell>
+                                <TableCell className="text-right">
+                                    <Link href={`/issues/${issue.id}`} className='flex items-center justify-end'><BiSolidShow className="text-xl hover:text-green-500 transition-colors" /></Link>
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
