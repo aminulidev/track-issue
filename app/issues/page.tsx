@@ -11,6 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
+import { Badge } from '@/components/ui/badge'
 
 const IssuesPage = async () => {
     const issues = await prisma.issue.findMany();
@@ -21,7 +22,6 @@ const IssuesPage = async () => {
 
             <div className='border rounded-md'>
                 <Table>
-                    {/* <TableCaption>Current issues</TableCaption> */}
                     <TableHeader>
                         <TableRow>
                             <TableHead>Issue</TableHead>
@@ -33,7 +33,7 @@ const IssuesPage = async () => {
                         {issues.map(issue => (
                             <TableRow key={issue.id}>
                                 <TableCell>{issue.title}</TableCell>
-                                <TableCell>{issue.status}</TableCell>
+                                <TableCell><Badge variant={issue.status === 'OPEN' ? 'destructive': `${issue.status === 'IN_PROGRESS' ? 'secondary': 'default'}`}>{issue.status}</Badge></TableCell>
                                 <TableCell className="text-right hidden sm:table-cell">{issue.createdAt.toDateString()}</TableCell>
                             </TableRow>
                         ))}
