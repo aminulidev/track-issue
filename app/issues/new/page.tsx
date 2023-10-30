@@ -1,16 +1,16 @@
 "use client";
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
+import { createIssueSchema } from "@/app/validationSchema";
+import ErrorMessage from "@/components/ErrorMessage";
+import Spinner from "@/components/Spinner";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { zodResolver } from "@hookform/resolvers/zod";
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createIssueSchema } from "@/app/validationSchema";
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import ErrorMessage from '@/components/ErrorMessage';
-import Spinner from '@/components/Spinner';
 
 
 type IssueForm = z.infer<typeof createIssueSchema>

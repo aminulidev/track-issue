@@ -1,5 +1,5 @@
-import prisma from '@/prisma/client'
-import React from 'react'
+import IssueAction from '@/components/IssueAction'
+import { Badge } from '@/components/ui/badge'
 import {
     Table,
     TableBody,
@@ -8,20 +8,16 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Badge } from '@/components/ui/badge'
-import delay from 'delay'
-import IssueAction from '@/components/IssueAction'
-import {BiSolidShow} from 'react-icons/bi'
+import prisma from '@/prisma/client'
 import Link from 'next/link'
+import { BiSolidShow } from 'react-icons/bi'
 
 const IssuesPage = async () => {
     const issues = await prisma.issue.findMany();
 
-    await delay(1500);
-
     return (
         <div className='space-y-3'>
-            <IssueAction/>
+            <IssueAction />
             <div className='border rounded-md'>
                 <Table>
                     <TableHeader>
@@ -36,7 +32,7 @@ const IssuesPage = async () => {
                         {issues.map(issue => (
                             <TableRow key={issue.id}>
                                 <TableCell>{issue.title}</TableCell>
-                                <TableCell><Badge variant={issue.status === 'OPEN' ? 'destructive': `${issue.status === 'IN_PROGRESS' ? 'warning': 'success'}`}>{issue.status}</Badge></TableCell>
+                                <TableCell><Badge variant={issue.status === 'OPEN' ? 'destructive' : `${issue.status === 'IN_PROGRESS' ? 'warning' : 'success'}`}>{issue.status}</Badge></TableCell>
                                 <TableCell className="hidden sm:table-cell">{issue.createdAt.toDateString()}</TableCell>
                                 <TableCell className="text-right">
                                     <Link href={`/issues/${issue.id}`} className='flex items-center justify-end'><BiSolidShow className="text-xl hover:text-green-500 transition-colors" /></Link>

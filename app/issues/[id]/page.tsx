@@ -1,9 +1,9 @@
 import { Badge } from '@/components/ui/badge'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import prisma from '@/prisma/client'
-import delay from 'delay'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import React from 'react'
 
 interface Props {
     params: { id: string }
@@ -14,13 +14,11 @@ const IssueDetailsPage = async ({ params }: Props) => {
         where: { id: params.id }
     });
 
-    await delay(2000);
-
     if (!issue)
         notFound();
 
     return (
-        <div>
+        <div className='text-center space-y-3'>
             <Card className='max-w-[450px] mx-auto relative'>
                 <CardHeader>
                     <Badge className='absolute right-6' variant={issue.status === 'OPEN' ? 'destructive': `${issue.status === 'IN_PROGRESS' ? 'warning': 'success'}`}>{issue.status}</Badge>
@@ -31,6 +29,8 @@ const IssueDetailsPage = async ({ params }: Props) => {
                     <p>{issue.description}</p>
                 </CardContent>
             </Card>
+
+            <Button><Link href='/issues'>Back</Link></Button>
         </div>
     )
 }
