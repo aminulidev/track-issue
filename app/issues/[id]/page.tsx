@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import prisma from '@/prisma/client'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import {BsPencilSquare} from 'react-icons/bs'
+import { BsPencilSquare } from 'react-icons/bs'
 
 interface Props {
     params: { id: string }
@@ -34,7 +34,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
                 </Card>
 
                 <div>
-                    <Button><Link href={`/issues/${issue.id}/edit`} className='flex items-center gap-1.5'><BsPencilSquare/> Edit Issue</Link></Button>
+                    <Button><Link href={`/issues/${issue.id}/edit`} className='flex items-center gap-1.5'><BsPencilSquare /> Edit Issue</Link></Button>
                 </div>
             </div>
 
