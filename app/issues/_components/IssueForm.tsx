@@ -1,5 +1,5 @@
 "use client";
-import { createIssueSchema } from "@/app/validationSchema";
+import { IssueSchema } from "@/app/validationSchema";
 import ErrorMessage from "@/components/ErrorMessage";
 import Spinner from "@/components/Spinner";
 import { Button } from '@/components/ui/button';
@@ -14,13 +14,13 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 
-type IssueFormData = z.infer<typeof createIssueSchema>
+type IssueFormData = z.infer<typeof IssueSchema>
 const IssueForm = async ({ issue }: { issue?: Issue }) => {
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [error, setError] = useState('');
     const router = useRouter();
     const { register, handleSubmit, formState: { errors } } = useForm<IssueFormData>({
-        resolver: zodResolver(createIssueSchema)
+        resolver: zodResolver(IssueSchema)
     });
 
     const onSubmit = handleSubmit(async (data) => {
