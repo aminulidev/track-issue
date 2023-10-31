@@ -26,7 +26,10 @@ const IssueForm = async ({ issue }: { issue?: Issue }) => {
     const onSubmit = handleSubmit(async (data) => {
         try {
             setIsSubmiting(true);
-            await axios.post('/api/issues', data);
+            if(issue)
+                await axios.patch('/api/issues/' + issue.id, data);
+            else
+                await axios.post('/api/issues', data);
             router.push("/issues");
         } catch (error) {
             setError('An unexpected error occurred!');
@@ -52,7 +55,7 @@ const IssueForm = async ({ issue }: { issue?: Issue }) => {
                     <Textarea defaultValue={issue?.description} {...register("description")} />
                     {errors.description && (<ErrorMessage message={errors.description.message} />)}
                 </div>
-                <Button type='submit' disabled={isSubmiting}>Submit New Issue {isSubmiting && <Spinner />}</Button>
+                <Button type='submit' disabled={isSubmiting}>{issue ? 'Update Issue': 'Submit New Issue'} {isSubmiting && <Spinner />}</Button>
             </form>
         </div>
     )
