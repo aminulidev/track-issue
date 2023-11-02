@@ -11,14 +11,25 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { buttonVariants } from "./ui/button";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 interface Props {
     children: React.ReactNode;
     title: string;
     description: string;
+    issueId: string;
 }
 
-const AlertCard = ({ children, title, description }: Props) => {
+const AlertCard = ({ children, title, description, issueId }: Props) => {
+    const router = useRouter();
+
+    const issueDeleteHandler = async () => {
+        await axios.delete('/api/issues/' + issueId);
+        router.push('/issues');
+        router.refresh();
+    }
     return (
         <AlertDialog>
             <AlertDialogTrigger>
@@ -33,7 +44,7 @@ const AlertCard = ({ children, title, description }: Props) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Confirme</AlertDialogAction>
+                    <AlertDialogAction onClick={() => issueDeleteHandler()} className={buttonVariants({variant: 'destructive'})}>Confirme</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

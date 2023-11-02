@@ -1,6 +1,8 @@
+import AlertCard from '@/components/AlertCard'
 import Icon from '@/components/Icon'
 import IssueAction from '@/components/IssueAction'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
     Table,
     TableBody,
@@ -10,14 +12,15 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import prisma from '@/prisma/client'
-import { BiSolidShow, BiEditAlt } from 'react-icons/bi'
 import { AiFillDelete } from 'react-icons/ai'
-import { Button } from '@/components/ui/button'
-import AlertCard from '@/components/AlertCard'
-import { AlertDialogTrigger } from '@radix-ui/react-alert-dialog'
+import { BiEditAlt, BiSolidShow } from 'react-icons/bi'
 
 const IssuesPage = async () => {
-    const issues = await prisma.issue.findMany();
+    const issues = await prisma.issue.findMany(
+        {
+            orderBy: {createdAt: 'desc'}
+        }
+    );
 
     return (
         <div className='space-y-3'>
@@ -42,8 +45,8 @@ const IssuesPage = async () => {
                                     <Icon href={`/issues/${issue.id}`}><BiSolidShow className="text-xl hover:text-green-500 transition-colors" /></Icon>
                                     <Icon href={`/issues/${issue.id}/edit`}><BiEditAlt className="text-xl hover:text-green-500 transition-colors" /></Icon>
                                     {/* <Button variant='link' size='link'><AiFillDelete className="text-xl hover:text-green-500 transition-colors" /></Button> */}
-                                    <AlertCard title='Delete Issue' description='Are you want to "Delete" this issue?'>
-                                        <Button variant='link' size='link'><AiFillDelete className="text-xl hover:text-green-500 transition-colors" /></Button>
+                                    <AlertCard issueId={issue.id} title='Delete Issue' description='Are you want to "Delete" this issue?'>
+                                        <Button variant='link' size='link'><AiFillDelete className="text-xl hover:text-destructive transition-colors" /></Button>
                                     </AlertCard>
                                 </TableCell>
                             </TableRow>
