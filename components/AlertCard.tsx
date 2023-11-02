@@ -10,10 +10,10 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { buttonVariants } from "./ui/button";
-import { useRouter } from "next/navigation";
+} from "@/components/ui/alert-dialog";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { buttonVariants } from "./ui/button";
 
 interface Props {
     children: React.ReactNode;
@@ -44,7 +44,7 @@ const AlertCard = ({ children, title, description, issueId }: Props) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => issueDeleteHandler()} className={buttonVariants({variant: 'destructive'})}>Confirme</AlertDialogAction>
+                    <AlertDialogAction onClick={() => issueDeleteHandler} className={buttonVariants({ variant: 'destructive' })}>Confirme</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
