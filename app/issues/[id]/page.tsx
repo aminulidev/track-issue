@@ -27,9 +27,9 @@ const IssueDetailsPage = async ({ params }: Props) => {
         <div className='space-y-3'>
             <div className='flex items-center justify-between space-x-6'>
                 <BackButton>Back</BackButton>
-                <Button>
+                {session && <Button>
                     <Link href={`/issues/edit/${issue.id}`} className='flex items-center gap-1.5'><BsPencilSquare /> Edit Issue</Link>
-                </Button>
+                </Button>}
             </div>
             <div>
                 <Card className='relative'>
