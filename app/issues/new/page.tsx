@@ -1,11 +1,12 @@
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import IssueForm from '../_components/IssueForm'
+import BackButton from '@/components/BackButton'
 
 const NewIssuePage = () => {
     return (
         <div>
-            <Button><Link href='/issues'>Back</Link></Button>
+            <BackButton>Back</BackButton>
             <IssueForm />
         </div>
     )

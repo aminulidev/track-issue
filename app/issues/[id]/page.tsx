@@ -1,7 +1,10 @@
+import authOptions from '@/app/auth/authOptions'
+import BackButton from '@/components/BackButton'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import prisma from '@/prisma/client'
+import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { BsPencilSquare } from 'react-icons/bs'
@@ -18,10 +21,17 @@ const IssueDetailsPage = async ({ params }: Props) => {
     if (!issue)
         notFound();
 
+    const session = await getServerSession(authOptions);
+
     return (
         <div className='space-y-3'>
-            <Button><Link href='/issues'>Back</Link></Button>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-3'>
+            <div className='flex items-center justify-between space-x-6'>
+                <BackButton>Back</BackButton>
+                <Button>
+                    <Link href={`/issues/edit/${issue.id}`} className='flex items-center gap-1.5'><BsPencilSquare /> Edit Issue</Link>
+                </Button>
+            </div>
+            <div>
                 <Card className='relative'>
                     <CardHeader>
                         <Badge className='absolute right-6' variant={issue.status === 'OPEN' ? 'destructive' : `${issue.status === 'IN_PROGRESS' ? 'warning' : 'success'}`}>{issue.status}</Badge>
@@ -32,10 +42,6 @@ const IssueDetailsPage = async ({ params }: Props) => {
                         <p>{issue.description}</p>
                     </CardContent>
                 </Card>
-
-                <div>
-                    <Button><Link href={`/issues/${issue.id}/edit`} className='flex items-center gap-1.5'><BsPencilSquare /> Edit Issue</Link></Button>
-                </div>
             </div>
 
         </div>
