@@ -44,7 +44,7 @@ const AlertCard = ({ children, title, description, issueId }: Props) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => issueDeleteHandler} className={buttonVariants({ variant: 'destructive' })}>Confirme</AlertDialogAction>
+                    <AlertDialogAction onClick={() => issueDeleteHandler()} className={buttonVariants({ variant: 'destructive' })}>Confirme</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

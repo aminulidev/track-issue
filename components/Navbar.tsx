@@ -4,14 +4,12 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { BsSubtract } from 'react-icons/bs';
-import { useSession } from 'next-auth/react'
-
+import Profile from './Profile';
 
 type Props = {}
 
 const Navbar = (props: Props) => {
     const currentPath = usePathname();
-    const {status, data: session} = useSession();
 
     const links = [
         { label: 'Dashboard', href: '/' },
@@ -26,18 +24,14 @@ const Navbar = (props: Props) => {
                     {links.map(link =>
                         <li key={link.label}>
                             <Link href={link.href} className={classNames({
-                                'text-slate-800': link.href === currentPath,
-                                'text-slate-500': link.href !== currentPath,
-                                'hover:text-slate-800 font-semibold transition-colors': true
+                                'nav-link': true,
+                                '!text-slate-800': link.href === currentPath,
                             })}>{link.label}</Link>
                         </li>
                     )}
                 </ul>
             </div>
-            <div>
-                {status === 'authenticated' && <Link className='text-slate-500 hover:text-slate-800 font-semibold transition-colors' href='/api/auth/signout'>Logout</Link>}
-                {status === 'unauthenticated' && <Link className='text-slate-500 hover:text-slate-800 font-semibold transition-colors' href='/api/auth/signin'>Signin</Link>}
-            </div>
+            <Profile/>
         </nav>
     )
 }
