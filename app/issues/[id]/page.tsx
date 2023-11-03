@@ -9,6 +9,14 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { BsPencilSquare } from 'react-icons/bs'
 
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+
 interface Props {
     params: { id: string }
 }
@@ -27,9 +35,23 @@ const IssueDetailsPage = async ({ params }: Props) => {
         <div className='space-y-3'>
             <div className='flex items-center justify-between space-x-6'>
                 <BackButton>Back</BackButton>
-                {session && <Button>
-                    <Link href={`/issues/edit/${issue.id}`} className='flex items-center gap-1.5'><BsPencilSquare /> Edit Issue</Link>
-                </Button>}
+                {session && (
+                    <div className='flex items-center space-x-6'>
+                        <Button>
+                            <Link href={`/issues/edit/${issue.id}`} className='flex items-center gap-1.5'><BsPencilSquare /> Edit Issue</Link>
+                        </Button>
+                        <Select>
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Assigned" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="light">Light</SelectItem>
+                                <SelectItem value="dark">Dark</SelectItem>
+                                <SelectItem value="system">System</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+                )}
             </div>
             <div>
                 <Card className='relative'>
