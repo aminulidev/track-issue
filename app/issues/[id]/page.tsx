@@ -8,14 +8,7 @@ import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { BsPencilSquare } from 'react-icons/bs'
-
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
+import SelectAssigned from '../_components/SelectAssigned'
 
 interface Props {
     params: { id: string }
@@ -40,16 +33,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
                         <Button>
                             <Link href={`/issues/edit/${issue.id}`} className='flex items-center gap-1.5'><BsPencilSquare /> Edit Issue</Link>
                         </Button>
-                        <Select>
-                            <SelectTrigger className="w-[180px]">
-                                <SelectValue placeholder="Assigned" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="light">Light</SelectItem>
-                                <SelectItem value="dark">Dark</SelectItem>
-                                <SelectItem value="system">System</SelectItem>
-                            </SelectContent>
-                        </Select>
+                        <SelectAssigned />
                     </div>
                 )}
             </div>

@@ -25,6 +25,8 @@ model Issue {
   status      Status   @default(OPEN)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  assignedToUserID String
+  assignedToUser User? @relation(fields: [assignedToUserID], references: [id])
 }
 
 model Account {
@@ -67,6 +69,7 @@ model User {
   updatedAt      DateTime  @updatedAt
   accounts       Account[]
   sessions       Session[]
+  assignedIssues Issue[]
 }
 
 model VerificationToken {
