@@ -19,7 +19,7 @@ const Profile = () => {
                 <DropdownMenu>
                     <DropdownMenuTrigger className="focus-visible:outline-none">
                         <Avatar >
-                            <AvatarImage src={session.user?.image!} />
+                            <AvatarImage src={session.user?.image!} referrerPolicy="no-referrer" />
                             <AvatarFallback>P</AvatarFallback>
                         </Avatar>
                     </DropdownMenuTrigger>

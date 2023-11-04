@@ -1,11 +1,8 @@
 import Navbar from '@/components/Navbar'
 import QueryClientProvider from '@/components/QueryClientProvider'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import AuthProvider from './auth/Provider'
 import './globals.css'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Track Issue',
@@ -19,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <QueryClientProvider>
           <AuthProvider>
             <Navbar />
