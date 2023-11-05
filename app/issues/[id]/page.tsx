@@ -33,7 +33,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
                         <Button>
                             <Link href={`/issues/edit/${issue.id}`} className='flex items-center gap-1.5'><BsPencilSquare /> Edit Issue</Link>
                         </Button>
-                        <SelectAssigned />
+                        <SelectAssigned issue={issue} />
                     </div>
                 )}
             </div>
