@@ -7,6 +7,7 @@ import prisma from '@/prisma/client'
 import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { Toaster } from 'react-hot-toast'
 import { BsPencilSquare } from 'react-icons/bs'
 import SelectAssigned from '../_components/SelectAssigned'
 
@@ -26,6 +27,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
 
     return (
         <div className='space-y-6'>
+            <Toaster />
             <div className='flex items-center justify-between space-x-6'>
                 <BackButton>Back</BackButton>
                 {session && (

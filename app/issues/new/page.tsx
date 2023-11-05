@@ -1,14 +1,16 @@
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import IssueForm from '../_components/IssueForm'
 import BackButton from '@/components/BackButton'
+import { Toaster } from 'react-hot-toast'
+import IssueForm from '../_components/IssueForm'
 
 const NewIssuePage = () => {
     return (
-        <div>
-            <BackButton>Back</BackButton>
-            <IssueForm />
-        </div>
+        <>
+            <Toaster />
+            <div>
+                <BackButton>Back</BackButton>
+                <IssueForm />
+            </div>
+        </>
     )
 }
 

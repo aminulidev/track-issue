@@ -2,6 +2,7 @@
 import BackButton from '@/components/BackButton'
 import prisma from '@/prisma/client'
 import { notFound } from 'next/navigation'
+import { Toaster } from 'react-hot-toast'
 import IssueForm from '../../_components/IssueForm'
 
 interface Props {
@@ -14,10 +15,13 @@ const EditIssuePage = async ({ params }: Props) => {
 
     if (!issue) notFound();
     return (
-        <div>
-            <BackButton>Back</BackButton>
-            <IssueForm issue={issue} />
-        </div>
+        <>
+            <Toaster />
+            <div>
+                <BackButton>Back</BackButton>
+                <IssueForm issue={issue} />
+            </div>
+        </>
     )
 }
 

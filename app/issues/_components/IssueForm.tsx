@@ -11,6 +11,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
 import { useForm } from 'react-hook-form';
+import toast, { Toaster } from "react-hot-toast";
 import { z } from 'zod';
 
 
@@ -26,23 +27,25 @@ const IssueForm = async ({ issue }: { issue?: Issue }) => {
     const onSubmit = handleSubmit(async (data) => {
         try {
             setIsSubmiting(true);
-            if(issue){
+            if (issue) {
                 await axios.patch('/api/issues/' + issue.id, data);
-                router.push('/issues');
-                router.refresh();
-            }else{
+                setIsSubmiting(false);
+                toast.success("Issue update successfully!");
+            } else {
                 await axios.post('/api/issues', data);
-                router.push("/issues");
-                router.refresh();
+                setIsSubmiting(false);
+                toast.success("Issue created successfully!");
             }
-                
+
         } catch (error) {
             setError('An unexpected error occurred!');
             setIsSubmiting(false);
+            toast.error("Issue save failed!");
         }
     });
 
     return (
+
         <div className='bg-slate-100 p-3 sm:p-5 rounded-sm max-w-xl mx-auto space-y-4'>
             {error && (
                 <ErrorMessage title='Error' message='An unexpted error occurred!' />
@@ -60,9 +63,10 @@ const IssueForm = async ({ issue }: { issue?: Issue }) => {
                     <Textarea defaultValue={issue?.description} {...register("description")} />
                     {errors.description && (<ErrorMessage message={errors.description.message} />)}
                 </div>
-                <Button type='submit' disabled={isSubmiting}>{issue ? 'Update Issue': 'Submit New Issue'} {isSubmiting && <Spinner />}</Button>
+                <Button type='submit' disabled={isSubmiting}>{issue ? 'Update Issue' : 'Submit New Issue'} {isSubmiting && <Spinner />}</Button>
             </form>
         </div>
+
     )
 }
 
