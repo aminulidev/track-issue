@@ -25,7 +25,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
     const session = await getServerSession(authOptions);
 
     return (
-        <div className='space-y-3'>
+        <div className='space-y-6'>
             <div className='flex items-center justify-between space-x-6'>
                 <BackButton>Back</BackButton>
                 {session && (
@@ -38,7 +38,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
                 )}
             </div>
             <div>
-                <Card className='relative'>
+                <Card className='relative max-w-3xl mx-auto'>
                     <CardHeader>
                         <Badge className='absolute right-6' variant={issue.status === 'OPEN' ? 'destructive' : `${issue.status === 'IN_PROGRESS' ? 'warning' : 'success'}`}>{issue.status}</Badge>
                         <CardTitle>{issue.title}</CardTitle>

@@ -23,7 +23,7 @@ const Profile = () => {
                             <AvatarFallback>P</AvatarFallback>
                         </Avatar>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
+                    <DropdownMenuContent className="me-4">
                         <DropdownMenuLabel>{session.user?.name}</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem><Link href="/profile">Profile</Link></DropdownMenuItem>
