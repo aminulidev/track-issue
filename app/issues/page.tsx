@@ -18,10 +18,12 @@ import { Toaster } from 'react-hot-toast'
 import { AiFillDelete } from 'react-icons/ai'
 import { BiEditAlt, BiSolidShow } from 'react-icons/bi'
 import authOptions from '../auth/authOptions'
+import { Status } from '@prisma/client'
 
-const IssuesPage = async () => {
+const IssuesPage = async ({searchParams}: {searchParams: {status: Status}}) => {
     const issues = await prisma.issue.findMany(
         {
+            where: {status: searchParams.status},
             orderBy: { createdAt: 'desc' }
         }
     );
