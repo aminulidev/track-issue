@@ -1,5 +1,6 @@
 import authOptions from '@/app/auth/authOptions'
 import BackButton from '@/components/BackButton'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -25,6 +26,10 @@ const IssueDetailsPage = async ({ params }: Props) => {
 
     const session = await getServerSession(authOptions);
 
+    const user = await prisma.user.findUnique({
+        where: { id: issue.assignedToUserID! }
+    });
+
     return (
         <div className='space-y-6'>
             <Toaster />
@@ -48,6 +53,14 @@ const IssueDetailsPage = async ({ params }: Props) => {
                     </CardHeader>
                     <CardContent>
                         <p>{issue.description}</p>
+
+                        <div className='flex items-center gap-3 mt-5'>
+                            <span className='font-bold'>Assigned to: </span>
+                            <Avatar title={user?.name!}>
+                                <AvatarImage src={user?.image!} />
+                                <AvatarFallback>P</AvatarFallback>
+                            </Avatar>
+                        </div>
                     </CardContent>
                 </Card>
             </div>

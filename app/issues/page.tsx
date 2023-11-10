@@ -19,6 +19,7 @@ import { AiFillDelete } from 'react-icons/ai'
 import { BiEditAlt, BiSolidShow } from 'react-icons/bi'
 import authOptions from '../auth/authOptions'
 import { Status } from '@prisma/client'
+import axios from 'axios'
 
 const IssuesPage = async ({searchParams}: {searchParams: {status: Status}}) => {
     const issues = await prisma.issue.findMany(
