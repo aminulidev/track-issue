@@ -1,34 +1,34 @@
-import AlertCard from '@/components/AlertCard'
 import BackButton from '@/components/BackButton'
-import Icon from '@/components/Icon'
+import DataTable from '@/components/DataTable'
 import IssueAction from '@/components/IssueAction'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
 import prisma from '@/prisma/client'
 import { Status } from '@prisma/client'
 import { getServerSession } from 'next-auth'
 import { Toaster } from 'react-hot-toast'
-import { AiFillDelete } from 'react-icons/ai'
-import { BiEditAlt, BiSolidShow } from 'react-icons/bi'
 import authOptions from '../auth/authOptions'
+import getCurrentUser from '../hooks/getCurrentUser'
 
 const IssuesPage = async ({ searchParams }: { searchParams: { status: Status } }) => {
+    const currentUser = await getCurrentUser();
+
     const issues = await prisma.issue.findMany(
         {
-            where: { status: searchParams.status },
+            where: {
+                userId: currentUser?.id,
+                status: searchParams.status,
+            },
             orderBy: { createdAt: 'desc' }
         }
     );
 
     const session = await getServerSession(authOptions);
+
+    const tableCol = [
+        { id: 1, title: 'Title' },
+        { id: 2, title: 'Status' },
+        { id: 3, title: 'Created' },
+        { id: 4, title: 'Action' },
+    ]
 
     return (
         <>
@@ -39,36 +39,7 @@ const IssuesPage = async ({ searchParams }: { searchParams: { status: Status } }
                     {session && <IssueAction />}
                 </div>
                 <div className='border rounded-md'>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead>Issue</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead className='hidden sm:table-cell'>Created</TableHead>
-                                <TableHead className='text-right'>Action</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {issues.map(issue => (
-                                <TableRow key={issue.id}>
-                                    <TableCell>{issue.title}</TableCell>
-                                    <TableCell><Badge variant={issue.status === 'OPEN' ? 'destructive' : `${issue.status === 'IN_PROGRESS' ? 'warning' : 'success'}`}>{issue.status}</Badge></TableCell>
-                                    <TableCell className="hidden sm:table-cell">{issue.createdAt.toDateString()}</TableCell>
-                                    <TableCell className="text-right">
-                                        <Icon href={`/issues/${issue.id}`}><BiSolidShow className="text-xl hover:text-green-500 transition-colors" /></Icon>
-                                        {session && (
-                                            <>
-                                                <Icon href={`/issues/edit/${issue.id}`}><BiEditAlt className="text-xl hover:text-green-500 transition-colors" /></Icon>
-                                                <AlertCard issueId={issue.id} title='Delete Issue' description='Are you want to "Delete" this issue?'>
-                                                    <Button variant='link' size='link'><AiFillDelete className="text-xl hover:text-destructive transition-colors" /></Button>
-                                                </AlertCard>
-                                            </>
-                                        )}
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                    <DataTable issues={issues} tableCol={tableCol} />
                 </div>
             </div>
         </>

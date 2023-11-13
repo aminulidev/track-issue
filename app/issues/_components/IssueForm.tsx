@@ -13,9 +13,8 @@ import { useState } from "react";
 import { useForm } from 'react-hook-form';
 import toast from "react-hot-toast";
 import { z } from 'zod';
-
-
 type IssueFormData = z.infer<typeof issueSchema>
+
 const IssueForm = async ({ issue }: { issue?: Issue }) => {
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [error, setError] = useState('');

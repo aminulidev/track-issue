@@ -1,13 +1,13 @@
-'use client'
-
+import getCurrentUser from "@/app/hooks/getCurrentUser";
 import { useSession } from "next-auth/react";
 
-const UserWelcom = () => {
-    const { status, data: session } = useSession();
+const UserWelcom = async () => {
+    const currentUser = await getCurrentUser();
+
     return (
         <div>
-            {status === 'authenticated' && (
-                <h1 className="text-xl font-semibold text-center">Hello, {session.user?.name?.split(' ')[0]}</h1>
+            {currentUser && (
+                <h1 className="text-2xl font-bold text-center">Hello, {currentUser.name?.split(' ')[0]}</h1>
             )}
         </div>
     )

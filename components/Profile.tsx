@@ -1,3 +1,4 @@
+import getCurrentUser from "@/app/hooks/getCurrentUser";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
     DropdownMenu,
@@ -7,34 +8,33 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useSession } from 'next-auth/react';
 import Link from "next/link";
 
-const Profile = () => {
-    const { status, data: session } = useSession();
+const Profile = async () => {
+    const currentUser = await getCurrentUser();
 
     return (
         <>
-            {status === 'authenticated' && (
+            {currentUser && (
                 <DropdownMenu>
                     <DropdownMenuTrigger className="focus-visible:outline-none">
                         <Avatar >
-                            <AvatarImage src={session.user?.image!} />
+                            <AvatarImage src={currentUser.image} />
                             <AvatarFallback>P</AvatarFallback>
                         </Avatar>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="me-4">
-                        <DropdownMenuLabel>{session.user?.name}</DropdownMenuLabel>
+                        <DropdownMenuLabel>{currentUser.name}</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem><Link href="/profile">Profile</Link></DropdownMenuItem>
                         <DropdownMenuItem><Link href="/issues">Issues</Link></DropdownMenuItem>
                         <DropdownMenuItem><Link href="/api/auth/signout">Logout</Link></DropdownMenuItem>
-                        
+
                     </DropdownMenuContent>
                 </DropdownMenu>
             )}
 
-            {status === 'unauthenticated' && <Link className='nav-link' href='/api/auth/signin'>Sign in</Link>}
+            {!currentUser && <Link className='nav-link' href='/api/auth/signin'>Sign in</Link>}
         </>
 
     )
