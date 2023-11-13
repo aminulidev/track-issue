@@ -34,7 +34,7 @@ const Profile = () => {
                 </DropdownMenu>
             )}
 
-            {status === 'unauthenticated' && <Link className='nav-link' href='/api/auth/signin'>Signin</Link>}
+            {status === 'unauthenticated' && <Link className='nav-link' href='/api/auth/signin'>Sign in</Link>}
         </>
 
     )
