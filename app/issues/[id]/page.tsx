@@ -26,9 +26,9 @@ const IssueDetailsPage = async ({ params }: Props) => {
 
     const session = await getServerSession(authOptions);
 
-    const user = await prisma.user.findUnique({
-        where: { id: issue.assignedToUserID! }
-    });
+    // const user = await prisma.user.findUnique({
+    //     where: { id: issue.assignedToUserID! }
+    // });
 
     return (
         <div className='space-y-6'>
@@ -40,7 +40,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
                         <Button>
                             <Link href={`/issues/edit/${issue.id}`} className='flex items-center gap-1.5'><BsPencilSquare /> Edit Issue</Link>
                         </Button>
-                        <SelectAssigned issue={issue} />
+                        {/* <SelectAssigned issue={issue} /> */}
                     </div>
                 )}
             </div>
@@ -54,13 +54,13 @@ const IssueDetailsPage = async ({ params }: Props) => {
                     <CardContent>
                         <p>{issue.description}</p>
 
-                        <div className='flex items-center gap-3 mt-5'>
+                        {/* <div className='flex items-center gap-3 mt-5'>
                             <span className='font-bold'>Assigned to: </span>
                             <Avatar title={user?.name!}>
                                 <AvatarImage src={user?.image!} />
                                 <AvatarFallback>P</AvatarFallback>
                             </Avatar>
-                        </div>
+                        </div> */}
                     </CardContent>
                 </Card>
             </div>

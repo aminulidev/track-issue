@@ -1,21 +1,36 @@
-import prisma from "@/prisma/client";
-import { NextRequest, NextResponse } from "next/server";
-import { issueSchema } from "../../validationSchema";
-import { getServerSession } from "next-auth";
-import authOptions from "@/app/auth/authOptions";
+import { NextResponse } from "next/server";
 
-export async function POST(request: NextRequest){
-    const session = await getServerSession(authOptions);
-    if (!session) return NextResponse.json({}, {status: 401});
+import prisma from "@/prisma/client";
+import getCurrentUser from "@/app/hooks/getCurrentUser";
+
+export async function POST(
+    request: Request,
+) {
+    const currentUser = await getCurrentUser();
+
+    if (!currentUser) {
+        return NextResponse.error();
+    }
 
     const body = await request.json();
-    const validation = issueSchema.safeParse(body);
-    if(!validation.success)
-        return NextResponse.json(validation.error.format(), {status: 400});
+    const {
+        title,
+        description,
+    } = body;
 
-    const newIssue = await prisma.issue.create({
-        data: {title: body.title, description: body.description}
+    Object.keys(body).forEach((value: any) => {
+        if (!body[value]) {
+            NextResponse.error();
+        }
     });
 
-    return NextResponse.json(newIssue, {status: 201});
+    const issue = await prisma.issue.create({
+        data: {
+            title,
+            description,
+            userId: currentUser.id
+        }
+    });
+
+    return NextResponse.json(issue);
 }

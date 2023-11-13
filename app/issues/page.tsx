@@ -13,18 +13,17 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import prisma from '@/prisma/client'
+import { Status } from '@prisma/client'
 import { getServerSession } from 'next-auth'
 import { Toaster } from 'react-hot-toast'
 import { AiFillDelete } from 'react-icons/ai'
 import { BiEditAlt, BiSolidShow } from 'react-icons/bi'
 import authOptions from '../auth/authOptions'
-import { Status } from '@prisma/client'
-import axios from 'axios'
 
-const IssuesPage = async ({searchParams}: {searchParams: {status: Status}}) => {
+const IssuesPage = async ({ searchParams }: { searchParams: { status: Status } }) => {
     const issues = await prisma.issue.findMany(
         {
-            where: {status: searchParams.status},
+            where: { status: searchParams.status },
             orderBy: { createdAt: 'desc' }
         }
     );
