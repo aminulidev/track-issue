@@ -1,7 +1,7 @@
 
 import DataTable from "@/components/DataTable";
 import UserWelcom from "@/components/UserWelcom";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import prisma from "@/prisma/client";
 import Link from "next/link";
 import getCurrentUser from "./hooks/getCurrentUser";
@@ -21,6 +21,7 @@ export default async function Home() {
             where: {
                 userId: currentUser?.id,
             },
+            orderBy: { createdAt: 'desc' }
         }
     );
 
@@ -45,7 +46,7 @@ export default async function Home() {
                                 <h1 className="text-xl font-semibold mb-2">You'r not created any issue!</h1>
                                 <p className="mb-6">Create your first issue.</p>
 
-                                <Button variant='default'><Link href='/issues/new'>Create issue</Link></Button>
+                                <Link href='/issues/new'>Create issue</Link>
                             </div>
                         )}
                     </div>
@@ -71,10 +72,9 @@ export default async function Home() {
                         <h1 className="text-xl font-semibold mb-2">Welcom to Issue Tracker App!</h1>
                         <p className="mb-6">Here, you can track your daily issue!</p>
 
-                        <Button variant='default'><Link href='/api/auth/signin'>Sign in</Link></Button>
+                        <Link href='/api/auth/signin'>Sign in</Link>
                     </div>
                 </div>
-
             )}
         </>
        
