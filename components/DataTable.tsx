@@ -1,6 +1,6 @@
 import authOptions from '@/app/auth/authOptions'
 import { Badge } from '@/components/ui/badge'
-import { Status } from '@prisma/client'
+import { Issue, Status } from '@prisma/client'
 import { getServerSession } from 'next-auth'
 import { AiFillDelete } from 'react-icons/ai'
 import { BiEditAlt, BiSolidShow } from 'react-icons/bi'
@@ -11,15 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import getCurrentUser from '@/app/hooks/getCurrentUser'
 
 interface Props {
-    issues: {
-        id: string,
-        userId: string,
-        title: string,
-        description: string,
-        status: Status,
-        createdAt: Date,
-        updatedAt: Date
-    }[],
+    issues: Issue[],
     tableCol: {
         id: number,
         title: string
@@ -29,6 +21,7 @@ interface Props {
 
 const DataTable = async ({ issues, tableCol }: Props) => {
     const currentUser = await getCurrentUser();
+    
     return (
         <div className='bg-slate-100 p-5 rounded'>
             <Table>
@@ -48,12 +41,12 @@ const DataTable = async ({ issues, tableCol }: Props) => {
                             <TableCell className="text-right">
                                 <Icon href={`/issues/${issue.id}`}><BiSolidShow className="text-xl hover:text-green-500 transition-colors" /></Icon>
                                 {currentUser && (
-                                    <div>
+                                    <>
                                         <Icon href={`/issues/edit/${issue.id}`}><BiEditAlt className="text-xl hover:text-green-500 transition-colors" /></Icon>
                                         <AlertCard issueId={issue.id} title='Delete Issue' description='Are you want to "Delete" this issue?'>
                                             <Button variant='link' size='link'><AiFillDelete className="text-xl hover:text-destructive transition-colors" /></Button>
                                         </AlertCard>
-                                    </div>
+                                    </>
                                 )}
                             </TableCell>
                         </TableRow>
