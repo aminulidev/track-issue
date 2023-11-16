@@ -20,7 +20,7 @@ export default function RootLayout({
         <QueryClientProvider>
           <AuthProvider>
             <Navbar />
-            <main className='container my-6 px-4'>{children}</main>
+            <main className='container my-6 px-4 relative top-14'>{children}</main>
           </AuthProvider>
         </QueryClientProvider>
       </body>

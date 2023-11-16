@@ -15,27 +15,17 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { buttonVariants } from "./ui/button";
+import React from "react";
 
 interface Props {
     children: React.ReactNode;
     title: string;
-    description: string;
-    issueId: string;
+    description: string | React.ReactNode;
+    alertFun: () => {};
 }
 
-const AlertCard = ({ children, title, description, issueId }: Props) => {
-    const router = useRouter();
+const AlertCard = ({ children, title, description, alertFun }: Props) => {
 
-    const issueDeleteHandler = async () => {
-        try {
-            await axios.delete('/api/issues/' + issueId);
-            toast.success("issue deleted!");
-            router.refresh();
-        } catch (error) {
-            toast.error("issue delete failed!");
-            router.refresh();
-        }
-    }
     return (
         <AlertDialog>
             <AlertDialogTrigger>
@@ -50,7 +40,7 @@ const AlertCard = ({ children, title, description, issueId }: Props) => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => issueDeleteHandler()} className={buttonVariants({ variant: 'destructive' })}>Confirme</AlertDialogAction>
+                    <AlertDialogAction onClick={() => {alertFun()}} className={buttonVariants({ variant: 'destructive' })}>Confirme</AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

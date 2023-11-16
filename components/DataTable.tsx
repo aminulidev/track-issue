@@ -1,14 +1,17 @@
-import authOptions from '@/app/auth/authOptions'
-import { Badge } from '@/components/ui/badge'
-import { Issue, Status } from '@prisma/client'
-import { getServerSession } from 'next-auth'
-import { AiFillDelete } from 'react-icons/ai'
-import { BiEditAlt, BiSolidShow } from 'react-icons/bi'
-import AlertCard from './AlertCard'
-import Icon from './Icon'
-import { Button } from './ui/button'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table'
-import getCurrentUser from '@/app/hooks/getCurrentUser'
+import getCurrentUser from '@/app/hooks/getCurrentUser';
+import { Badge } from '@/components/ui/badge';
+import { Issue } from '@prisma/client';
+import { AiFillDelete } from 'react-icons/ai';
+import { BiEditAlt, BiSolidShow } from 'react-icons/bi';
+import AlertCard from './AlertCard';
+import Icon from './Icon';
+import { Button } from './ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
+import IssueDelete from './IssueDelete';
+import IssueShare from './IssueShare';
 
 interface Props {
     issues: Issue[],
@@ -21,14 +24,14 @@ interface Props {
 
 const DataTable = async ({ issues, tableCol }: Props) => {
     const currentUser = await getCurrentUser();
-    
+
     return (
         <div className='bg-slate-100 p-5 rounded'>
             <Table>
                 <TableHeader>
                     <TableRow>
                         {tableCol.map(col => (
-                            <TableHead key={col.id}>{col.title}</TableHead>
+                            <TableHead className={`${col.title === 'Action' ? 'text-right': ''}`} key={col.id}>{col.title}</TableHead>
                         ))}
                     </TableRow>
                 </TableHeader>
@@ -43,9 +46,8 @@ const DataTable = async ({ issues, tableCol }: Props) => {
                                 {currentUser && (
                                     <>
                                         <Icon href={`/issues/edit/${issue.id}`}><BiEditAlt className="text-xl hover:text-green-500 transition-colors" /></Icon>
-                                        <AlertCard issueId={issue.id} title='Delete Issue' description='Are you want to "Delete" this issue?'>
-                                            <Button variant='link' size='link'><AiFillDelete className="text-xl hover:text-destructive transition-colors" /></Button>
-                                        </AlertCard>
+                                        <IssueShare issueId={issue.id} />
+                                        <IssueDelete issueId={issue.id} />
                                     </>
                                 )}
                             </TableCell>
