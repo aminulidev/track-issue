@@ -6,31 +6,33 @@ import AlertCard from './AlertCard';
 import { Button } from './ui/button';
 import { FaShareAlt } from "react-icons/fa";
 import IssueShareSelect from './IssueShareSelect';
+import { Issue } from '@prisma/client';
 
 
 interface Props {
-    issueId: string
+    issueId: string;
+    issue: Issue
 }
 
-const IssueDelete = ({issueId}: Props ) => {
+const IssueShare = ({issueId, issue}: Props ) => {
     const router = useRouter();
 
     const issueShareHandler = async () => {
-        // try {
-        //     await axios.delete('/api/issues/' + issueId);
-        //     toast.success("issue deleted!");
-        //     router.refresh();
-        // } catch (error) {
-        //     toast.error("issue delete failed!");
-        //     router.refresh();
-        // }
+        try {
+            await axios.patch('/api/issues/' + issue.id, { sharedBy: issue.userId || null });
+            toast.success("issue updated!");
+            router.refresh();
+        } catch (error) {
+            toast.error("issue update failed!");
+            router.refresh();
+        }
     }
     
     return (
-        <AlertCard alertFun={issueShareHandler} title='Issue Share to' description={<IssueShareSelect/>}>
+        <AlertCard alertFun={issueShareHandler} title='Issue Share to' description={<IssueShareSelect issue={issue} />}>
             <Button variant='link' size='link'><FaShareAlt className="text-xl hover:text-green-500 transition-colors" /></Button>
         </AlertCard>
     )
 }
 
-export default IssueDelete
+export default IssueShare
