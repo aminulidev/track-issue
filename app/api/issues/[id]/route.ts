@@ -17,13 +17,13 @@ export async function PATCH(
     if (!validation.success)
         return NextResponse.json(validation.error.format(), { status: 400 });
 
-    const { assignedToUserID, title, description } = body;
-    if (assignedToUserID) {
-        const user = await prisma.user.findUnique({
-            where: { id: assignedToUserID },
-        });
-        if (!user) return NextResponse.json({ error: 'Invalid User!' }, { status: 400 })
-    }
+    const {title, description, sharedTo } = body;
+    // if (sharedBy) {
+    //     const user = await prisma.user.findUnique({
+    //         where: { id: sharedBy },
+    //     });
+    //     if (!user) return NextResponse.json({ error: 'Invalid User!' }, { status: 400 })
+    // }
 
     const issue = prisma.issue.findUnique({
         where: { id: params.id }
@@ -36,7 +36,6 @@ export async function PATCH(
         data: {
             title,
             description,
-            assignedToUserID
         }
     })
 

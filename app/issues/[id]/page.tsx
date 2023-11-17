@@ -11,6 +11,7 @@ import { notFound } from 'next/navigation'
 import { Toaster } from 'react-hot-toast'
 import { BsPencilSquare } from 'react-icons/bs'
 import SelectAssigned from '../_components/SelectAssigned'
+import IssueShareSelect from '@/components/IssueShareSelect'
 
 interface Props {
     params: { id: string }
@@ -37,10 +38,12 @@ const IssueDetailsPage = async ({ params }: Props) => {
                 <BackButton>Back</BackButton>
                 {session && (
                     <div className='flex items-center space-x-6'>
+                        <IssueShareSelect issue={issue} />
                         <Button>
                             <Link href={`/issues/edit/${issue.id}`} className='flex items-center gap-1.5'><BsPencilSquare /> Edit Issue</Link>
                         </Button>
                         {/* <SelectAssigned issue={issue} /> */}
+                        
                     </div>
                 )}
             </div>
