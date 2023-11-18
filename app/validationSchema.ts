@@ -7,3 +7,12 @@ export const issueSchema = z.object({
     sharedTo: z.string().min(1, 'UserType is required!').max(255).optional(),
 });
 
+export const listSchema = z.object({
+    title: z.string().min(1, 'Title is required!').max(255).optional()
+});
+
+export const todoListSchema = z.object({
+    title: z.string().min(1, 'Title is required!').max(255).optional(),
+    category: z.string().min(1, 'Title is required!').max(255).optional(),
+});
+

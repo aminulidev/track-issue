@@ -9,7 +9,9 @@ const Menu = () => {
     const currentPath = usePathname();
     const links = [
         { label: 'Dashboard', href: '/' },
-        { label: 'Issues', href: '/issues' },
+        { label: 'Lists', href: '/lists' },
+        // { label: 'Issues', href: '/issues' },
+        // { label: 'Users', href: '/user' },
     ]
 
     return (

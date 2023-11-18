@@ -7,21 +7,15 @@ import { getServerSession } from 'next-auth'
 import { Toaster } from 'react-hot-toast'
 import authOptions from '../auth/authOptions'
 import getCurrentUser from '../hooks/getCurrentUser'
+import UsersTable from '@/components/UsersTable'
 
-const IssuesPage = async ({ searchParams }: { searchParams: { status: Status } }) => {
+const UsersPage = async () => {
+    const session = await getServerSession(authOptions);
     const currentUser = await getCurrentUser();
 
-    const issues = await prisma.issue.findMany(
-        {
-            where: {
-                userId: currentUser?.id,
-                status: searchParams.status,
-            },
-            orderBy: { createdAt: 'desc' }
-        }
-    );
-
-    const session = await getServerSession(authOptions);
+    const users = await prisma.user.findMany({
+        orderBy: {name: 'asc'}
+    });
 
     const tableCol = [
         { id: 1, title: 'Title' },
@@ -36,14 +30,13 @@ const IssuesPage = async ({ searchParams }: { searchParams: { status: Status } }
             <div className='space-y-3'>
                 <div className='flex items-center justify-between space-x-6'>
                     <BackButton>Back</BackButton>
-                    {session && <IssueAction />}
                 </div>
                 <div className='border rounded-md'>
-                    <DataTable issues={issues} tableCol={tableCol} />
+                    <UsersTable users={users} tableCol={tableCol} />
                 </div>
             </div>
         </>
     )
 }
 
-export default IssuesPage
+export default UsersPage
