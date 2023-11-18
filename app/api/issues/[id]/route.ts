@@ -20,7 +20,7 @@ export async function PATCH(
     if (!validation.success)
         return NextResponse.json(validation.error.format(), { status: 400 });
 
-    const { title, status, description, sharedBy } = body;
+    const { title, description, status, sharedTo, sharedBy } = body;
     if (sharedBy) {
         const user = await prisma.user.findUnique({
             where: { id: sharedBy },
@@ -38,8 +38,9 @@ export async function PATCH(
         where: { id: params.id },
         data: {
             title,
-            status,
             description,
+            status,
+            sharedTo,
             sharedBy: currentUser?.id
         }
     })

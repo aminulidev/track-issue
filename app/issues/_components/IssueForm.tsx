@@ -3,6 +3,7 @@ import { issueSchema } from "@/app/validationSchema";
 import ErrorMessage from "@/components/ErrorMessage";
 import Spinner from "@/components/Spinner";
 import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from '@/components/ui/textarea';
@@ -11,7 +12,7 @@ import { Issue, Status, UserType } from "@prisma/client";
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import toast from "react-hot-toast";
 import { z } from 'zod';
 
@@ -33,18 +34,14 @@ const IssueForm = async ({ issue }: { issue?: Issue }) => {
     const [isSubmiting, setIsSubmiting] = useState(false);
     const [error, setError] = useState('');
 
-    const { control, setValue, register, handleSubmit, formState: { errors } } = useForm<IssueFormData>({
+    const form = useForm<IssueFormData>({
         resolver: zodResolver(issueSchema),
-        defaultValues: {
-            status: issue?.status || 'Status',
-        },
     });
 
-    const onSubmit = handleSubmit(async (data) => {
+    const onSubmit = async (data: IssueFormData) => {
         try {
             setIsSubmiting(true);
             if (issue) {
-                console.log(data);
                 await axios.patch('/api/issues/' + issue.id, data);
                 setIsSubmiting(false);
                 toast.success("Issue update successfully!");
@@ -59,7 +56,7 @@ const IssueForm = async ({ issue }: { issue?: Issue }) => {
             setIsSubmiting(false);
             toast.error("Issue save failed!");
         }
-    });
+    };
 
     return (
 
@@ -68,7 +65,7 @@ const IssueForm = async ({ issue }: { issue?: Issue }) => {
                 <ErrorMessage title='Error' message='An unexpted error occurred!' />
             )}
 
-            <form
+            {/* <form
                 className='space-y-4'
                 onSubmit={onSubmit}
             >
@@ -81,29 +78,102 @@ const IssueForm = async ({ issue }: { issue?: Issue }) => {
                     {errors.description && (<ErrorMessage message={errors.description.message} />)}
                 </div>
                 <div className="flex justify-between">
-                    <Controller
-                        name="status"
-                        control={control}
-                        render={({ field }) => (
-                            <Select {...field} onValueChange={setValue()}>
-                                <SelectTrigger className="w-[180px] [&_span]:flex [&_span]:items-center [&_span]:gap-2">
-                                    <SelectValue placeholder="Status" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {statuses.map((status) => (
-                                        <SelectItem key={status.value} value={status.value} placeholder="Status">
-                                            {status.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        )}
-                    />
+                    <Select>
+                        <SelectTrigger className="w-[180px] [&_span]:flex [&_span]:items-center [&_span]:gap-2 ">
+                            <SelectValue placeholder="Assigned" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {statuses?.map(status =>
+                                <SelectItem className="flex items-center justify-between space-x-2" key={status.label} value={status.value}>
+                                    {status.label}
+                                </SelectItem>)}
+                        </SelectContent>
+                    </Select>
                     {errors.description && (<ErrorMessage message={errors.description.message} />)}
                 </div>
 
                 <Button type='submit' disabled={isSubmiting}>{issue ? 'Update Issue' : 'Submit New Issue'} {isSubmiting && <Spinner />}</Button>
-            </form>
+            </form> */}
+
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                    <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Title</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Title" defaultValue={issue?.title} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Description</FormLabel>
+                                <FormControl>
+                                    <Textarea placeholder="Description" defaultValue={issue?.description} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="status"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Status</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select Status" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {statuses.map(item => (
+                                        <SelectItem key={item.label} value={item.value}>{item.label}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="sharedTo"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Share to</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select User" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {userTypes.map(item => (
+                                        <SelectItem key={item.label} value={item.value}>{item.label}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <Button type='submit' disabled={isSubmiting}>{issue ? 'Update Issue' : 'Submit New Issue'} {isSubmiting && <Spinner />}</Button>
+                </form>
+            </Form>
         </div>
 
     )

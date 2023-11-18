@@ -15,9 +15,18 @@ export async function POST(
     const body = await request.json();
     const {
         title,
-        status,
         description,
+        status,
+        sharedTo,
+        sharedBy
     } = body;
+
+    if (sharedBy) {
+        const user = await prisma.user.findUnique({
+            where: { id: sharedBy },
+        });
+        if (!user) return NextResponse.json({ error: 'Invalid User!' }, { status: 400 })
+    }
 
     Object.keys(body).forEach((value: any) => {
         if (!body[value]) {
@@ -28,9 +37,11 @@ export async function POST(
     const issue = await prisma.issue.create({
         data: {
             title,
-            status,
             description,
-            userId: currentUser.id
+            status,
+            sharedTo,
+            sharedBy: currentUser.id,
+            userId: currentUser.id,
         }
     });
 
