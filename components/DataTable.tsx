@@ -11,7 +11,6 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import IssueDelete from './IssueDelete';
-import IssueShare from './IssueShare';
 
 interface Props {
     issues: Issue[],
@@ -46,7 +45,6 @@ const DataTable = async ({ issues, tableCol }: Props) => {
                                 {currentUser && (
                                     <>
                                         <Icon href={`/issues/edit/${issue.id}`}><BiEditAlt className="text-xl hover:text-green-500 transition-colors" /></Icon>
-                                        <IssueShare issueId={issue.id} />
                                         <IssueDelete issueId={issue.id} />
                                     </>
                                 )}

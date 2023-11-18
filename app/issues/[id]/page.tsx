@@ -10,14 +10,13 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { Toaster } from 'react-hot-toast'
 import { BsPencilSquare } from 'react-icons/bs'
-import SelectAssigned from '../_components/SelectAssigned'
-import IssueShareSelect from '@/components/IssueShareSelect'
 
 interface Props {
     params: { id: string }
 }
 
 const IssueDetailsPage = async ({ params }: Props) => {
+
     const issue = await prisma.issue.findUnique({
         where: { id: params.id }
     });
@@ -27,10 +26,6 @@ const IssueDetailsPage = async ({ params }: Props) => {
 
     const session = await getServerSession(authOptions);
 
-    // const user = await prisma.user.findUnique({
-    //     where: { id: issue.assignedToUserID! }
-    // });
-
     return (
         <div className='space-y-6'>
             <Toaster />
@@ -38,7 +33,6 @@ const IssueDetailsPage = async ({ params }: Props) => {
                 <BackButton>Back</BackButton>
                 {session && (
                     <div className='flex items-center space-x-6'>
-                        <IssueShareSelect issue={issue} />
                         <Button>
                             <Link href={`/issues/edit/${issue.id}`} className='flex items-center gap-1.5'><BsPencilSquare /> Edit Issue</Link>
                         </Button>
