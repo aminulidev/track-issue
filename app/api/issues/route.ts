@@ -15,6 +15,7 @@ export async function POST(
     const body = await request.json();
     const {
         title,
+        status,
         description,
     } = body;
 
@@ -27,6 +28,7 @@ export async function POST(
     const issue = await prisma.issue.create({
         data: {
             title,
+            status,
             description,
             userId: currentUser.id
         }

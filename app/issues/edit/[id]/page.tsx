@@ -4,10 +4,12 @@ import prisma from '@/prisma/client'
 import { notFound } from 'next/navigation'
 import { Toaster } from 'react-hot-toast'
 import IssueForm from '../../_components/IssueForm'
+import { Status } from '@prisma/client'
 
 interface Props {
     params: { id: string }
 }
+
 const EditIssuePage = async ({ params }: Props) => {
     const issue = await prisma.issue.findUnique({
         where: { id: params.id }
