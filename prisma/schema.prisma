@@ -69,6 +69,7 @@ model User {
   accounts       Account[]
   sessions       Session[]
   issues         Issue[]
+  List           List[]
 }
 
 enum Status {
@@ -89,4 +90,28 @@ model Issue {
   sharedBy    String?   @db.ObjectId
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model List {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String    @db.ObjectId
+  title     String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  sharedTo  UserType? @default(VIEWER)
+  sharedBy  String?   @db.ObjectId
+
+  user     User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  TodoList TodoList[]
+}
+
+model TodoList {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  listId    String   @db.ObjectId
+  title     String
+  category  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  list List @relation(fields: [listId], references: [id], onDelete: Cascade)
 }
