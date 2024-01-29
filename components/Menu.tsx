@@ -10,7 +10,7 @@ const Menu = () => {
     const links = [
         { label: 'Dashboard', href: '/' },
         { label: 'Lists', href: '/lists' },
-        // { label: 'Issues', href: '/issues' },
+        { label: 'Issues', href: '/issues' },
         // { label: 'Users', href: '/user' },
     ]
 

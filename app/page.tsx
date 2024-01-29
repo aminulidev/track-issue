@@ -10,6 +10,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 export default async function Home() {
     const currentUser = await getCurrentUser();
 
+    const tableCol = [
+        { id: 1, title: 'Title' },
+        { id: 2, title: 'Status' },
+        { id: 3, title: 'Created' },
+        { id: 4, title: 'Action' },
+    ];
+
     const listCreatedMe = await prisma.list.findMany(
         {
             where: {
@@ -19,23 +26,23 @@ export default async function Home() {
         }
     );
 
-    // const issuesSharedByMe = await prisma.issue.findMany(
-    //     {
-    //         where: {
-    //             sharedBy: currentUser?.id,
-    //         },
-    //         orderBy: { createdAt: 'desc' },
-    //     }
-    // );
+    const issuesSharedByMe = await prisma.issue.findMany(
+        {
+            where: {
+                sharedBy: currentUser?.id,
+            },
+            orderBy: { createdAt: 'desc' },
+        }
+    );
 
-    // const issuesSharedWithMe = await prisma.issue.findMany(
-    //     {
-    //         where: {
-    //             sharedBy: currentUser?.id,
-    //         },
-    //         orderBy: { createdAt: 'desc' },
-    //     }
-    // );
+    const issuesSharedWithMe = await prisma.issue.findMany(
+        {
+            where: {
+                sharedBy: currentUser?.id,
+            },
+            orderBy: { createdAt: 'desc' },
+        }
+    );
 
     return (
         <>
@@ -78,7 +85,7 @@ export default async function Home() {
 
                         {!listCreatedMe && (
                             <div className="text-center">
-                                <h1 className="text-xl font-semibold mb-2">You'r not created any lists!</h1>
+                                <h1 className="text-xl font-semibold mb-2">Your not created any lists!</h1>
                                 <p className="mb-6">Create your first lists.</p>
 
                                 <Link href='/lists/new'>Create issue</Link>
@@ -87,24 +94,24 @@ export default async function Home() {
                     </div>
 
                     {/* Shared by me */}
-                    {/* <div>
+                    <div>
                         {issuesSharedByMe && (
                             <>
                                 <h2 className="text-xl font-semibold mb-5">Shared by me</h2>
                                 <DataTable issues={issuesSharedByMe} tableCol={tableCol} />
                             </>
                         )}
-                    </div> */}
+                    </div>
 
                     {/* Shared with me */}
-                    {/* <div>
+                    <div>
                         {!issuesSharedWithMe && (
                             <>
                                 <h2 className="text-xl font-semibold mb-5">Shared with me</h2>
                                 <DataTable issues={issuesSharedWithMe} tableCol={tableCol} />
                             </>
                         )}
-                    </div> */}
+                    </div>
 
                 </div>
             )}
